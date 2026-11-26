@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian Commercial Bank | Corporate Treasury &amp; Digital Banking</title>
+  <meta
+    name="description"
+    content="Meridian Commercial Bank — Institutional commercial banking portal built on atomic ledger integrity, fixed-point precision, and cryptographic access controls."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Toast notification container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Receipt / Confirmation Modal -->
+  <div id="modal-backdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <p class="modal-eyebrow" id="modal-eyebrow">OFFICIAL RECORD</p>
+          <h3 id="modal-title">Transaction Receipt</h3>
+        </div>
+        <button type="button" class="icon-btn" id="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer" id="modal-footer">
+        <button type="button" class="btn btn-primary" id="modal-done-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PUBLIC COMMERCIAL PORTAL ==================== -->
+  <div id="public-view">
+    <div class="utility-strip">
+      <div class="container utility-inner">
+        <div class="utility-left">
+          <span>Routing / ABA: <strong>021000021</strong></span>
+          <span class="sep">|</span>
+          <span>SWIFT: <strong>MRDNUS33</strong></span>
+          <span class="sep hide-sm">|</span>
+          <span class="hide-sm">24/7 Commercial Treasury Operations</span>
+        </div>
+        <div class="utility-right">
+          <span class="mode-pill" id="public-mode-pill">Initializing Ledger...</span>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#top" class="brand-lockup" aria-label="Meridian Commercial Bank Home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="6" fill="#0B1F3A" />
+              <path d="M8 26V11L13.5 18L18 11L22.5 18L28 11V26" stroke="#C9A44C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+              <line x1="7" y1="28.5" x2="29" y2="28.5" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">MERIDIAN</span>
+            <span class="brand-sub">COMMERCIAL BANK</span>
+          </span>
+        </a>
+
+        <nav class="main-nav" aria-label="Primary Navigation">
+          <a href="#capabilities">Capabilities</a>
+          <a href="#security">Security &amp; Controls</a>
+          <a href="#model-reference">Ledger Architecture</a>
+        </nav>
+
+        <div class="header-actions">
+          <button type="button" class="btn btn-outline-sm" id="header-signin-btn">Sign In</button>
+          <button type="button" class="btn btn-primary-sm" id="header-open-btn">Open Account</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              INSTITUTIONAL TREASURY &amp; COMMERCIAL BANKING
+            </div>
+            <h1>Precision Commercial Banking Built on Atomic Ledger Integrity.</h1>
+            <p class="hero-lead">
+              Provision commercial accounts, manage corporate liquidity, and execute real-time
+              inter-account transfers backed by fixed-point monetary validation and salted
+              cryptographic authentication.
+            </p>
+
+            <div class="hero-metrics">
+              <div class="metric-item">
+                <div class="metric-value">$0.01</div>
+                <div class="metric-label">Fixed-Point Ledger Precision</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-value">ACID</div>
+                <div class="metric-label">Atomic Debit &amp; Credit Commits</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">Audited Transaction Trail</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-panel" id="auth-panel">
+            <div class="auth-tabs" role="tablist">
+              <button
+                type="button"
+                class="auth-tab active"
+                id="tab-btn-login"
+                role="tab"
+                aria-selected="true"
+              >
+                Client Sign In
+              </button>
+              <button
+                type="button"
+                class="auth-tab"
+                id="tab-btn-register"
+                role="tab"
+                aria-selected="false"
+              >
+                Open Account
+              </button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="login-form" class="auth-form" novalidate>
+              <div class="form-header">
+                <h2>Commercial Portal Access</h2>
+                <p>Enter your issued account number and credentials.</p>
+              </div>
+
+              <div class="field-group">
+                <label for="login-account-number">Account Number</label>
+                <input
+                  id="login-account-number"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="username"
+                  placeholder="e.g. 10010001"
+                  required
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="login-password">Password</label>
+                <div class="password-wrap">
+                  <input
+                    id="login-password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button type="button" class="toggle-pw-btn" data-target="login-password">Show</button>
+                </div>
+              </div>
+
+              <div id="login-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn">
+                Sign In to Portal
+              </button>
+
+              <div class="demo-box">
+                <div class="demo-box-header">
+                  <span>Evaluators &amp; Demo Accounts</span>
+                  <span class="demo-tag">Pre-Seeded</span>
+                </div>
+                <div class="demo-accounts-list">
+                  <button
+                    type="button"
+                    class="demo-account-btn"
+                    data-ac="10010001"
+                    data-pw="Meridian@2026"
+                  >
+                    <div>
+                      <strong>Meridian Logistics Corp</strong>
+                      <span>Acct #10010001 · $125,450.00</span>
+                    </div>
+                    <span class="demo-fill">Use &rarr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="demo-account-btn"
+                    data-ac="10010002"
+                    data-pw="Apex@2026"
+                  >
+                    <div>
+                      <strong>Apex Retail Holdings</strong>
+                      <span>Acct #10010002 · $48,920.50</span>
+                    </div>
+                    <span class="demo-fill">Use &rarr;</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Create Account Form -->
+            <form id="register-form" class="auth-form hidden" novalidate>
+              <div class="form-header">
+                <h2>Open Commercial Account</h2>
+                <p>Account number is issued automatically with a $0.00 opening balance.</p>
+              </div>
+
+              <div class="field-group">
+                <label for="register-name">Account Holder / Entity Name</label>
+                <input
+                  id="register-name"
+                  type="text"
+                  autocomplete="name"
+                  placeholder="e.g. Northstar Capital Partners"
+                  required
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="register-password">Create Password</label>
+                <div class="password-wrap">
+                  <input
+                    id="register-password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Minimum 6 characters"
+                    required
+                  />
+                  <button type="button" class="toggle-pw-btn" data-target="register-password">Show</button>
+                </div>
+                <div class="strength-bar-wrap">
+                  <div id="register-strength-bar" class="strength-bar"></div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="register-confirm">Confirm Password</label>
+                <input
+                  id="register-confirm"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Re-enter password"
+                  required
+                />
+              </div>
+
+              <div id="register-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="register-submit-btn">
+                Create Commercial Account
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="capabilities" class="section-light">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-eyebrow">CORE BANKING SERVICES</p>
+            <h2>Enterprise Financial Operations</h2>
+            <p>
+              Every capability is modeled directly on strict commercial ledger rules: verified active
+              accounts, validated 2-decimal amounts, and double-sided transaction recording.
+            </p>
+          </div>
+
+          <div class="cards-4">
+            <article class="info-card">
+              <div class="card-icon">01</div>
+              <h3>Account Provisioning</h3>
+              <p>
+                Instant issuance of sequential commercial account numbers with active-status gating
+                and zero-balance initialization.
+              </p>
+            </article>
+            <article class="info-card">
+              <div class="card-icon">02</div>
+              <h3>Teller Operations</h3>
+              <p>
+                Execute deposits and withdrawals with strict two-decimal validation and real-time
+                insufficient-funds protection.
+              </p>
+            </article>
+            <article class="info-card">
+              <div class="card-icon">03</div>
+              <h3>Atomic Transfers</h3>
+              <p>
+                Payer debit, recipient credit, and ledger insertion execute as a single atomic unit,
+                blocking self-transfers and inactive destinations.
+              </p>
+            </article>
+            <article class="info-card">
+              <div class="card-icon">04</div>
+              <h3>Audit Ledger &amp; Receipts</h3>
+              <p>
+                Complete chronological history of deposits, withdrawals, and transfers with exportable
+                CSV statements and verifiable receipts.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="security" class="section-navy">
+        <div class="container security-grid">
+          <div>
+            <p class="section-eyebrow gold">SECURITY &amp; GOVERNANCE</p>
+            <h2>Engineered for Monetary Accuracy &amp; Credential Protection</h2>
+            <p class="navy-lead">
+              Modeled after commercial core-banking controls to prevent floating-point drift,
+              unauthenticated access, and partial ledger updates.
+            </p>
+          </div>
+          <div class="control-list">
+            <div class="control-row">
+              <span class="control-badge">AUTH</span>
+              <div>
+                <h4>Salted Cryptographic Password Storage</h4>
+                <p>Passwords are never stored in plaintext; verified with constant-time comparison.</p>
+              </div>
+            </div>
+            <div class="control-row">
+              <span class="control-badge">MATH</span>
+              <div>
+                <h4>Exact Cents / Fixed-Point Arithmetic</h4>
+                <p>Rejects inputs beyond two decimal places and eliminates binary rounding errors.</p>
+              </div>
+            </div>
+            <div class="control-row">
+              <span class="control-badge">STATE</span>
+              <div>
+                <h4>Active-Account Lifecycle Enforcement</h4>
+                <p>Closed accounts cannot authenticate, originate transfers, or receive funds.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="model-reference" class="section-light">
+        <div class="container">
+          <div class="architecture-banner">
+            <div>
+              <p class="section-eyebrow">SYSTEM LINEAGE</p>
+              <h3>Inspired by the BankSystem Core Architecture</h3>
+              <p>
+                This web application translates the <code>Account</code>, <code>Bank</code>,
+                <code>AccountDAO</code>, <code>Transaction</code>, and <code>PasswordUtil</code>
+                domain model into a deployable commercial banking portal.
+              </p>
+            </div>
+            <div class="arch-pills">
+              <span>Account &amp; Active Lifecycle</span>
+              <span>Atomic Balance + Ledger</span>
+              <span>DECIMAL(19,2) Validation</span>
+              <span>Salted Hash Verification</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <strong>MERIDIAN COMMERCIAL BANK</strong>
+          <p class="footer-note">
+            Reference commercial banking web application. Balances and transfers operate within this
+            application's ledger and do not represent real FDIC-insured deposits or live wire networks.
+          </p>
+        </div>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-outline-light hidden" id="reset-demo-btn">
+            Reset Browser Demo Ledger
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==================== AUTHENTICATED BANKING DASHBOARD ==================== -->
+  <div id="dashboard-view" class="hidden">
+    <header class="dash-topbar">
+      <div class="dash-topbar-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+          &#9776;
+        </button>
+        <div class="brand-lockup compact">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="6" fill="#0B1F3A" />
+              <path d="M8 26V11L13.5 18L18 11L22.5 18L28 11V26" stroke="#C9A44C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">MERIDIAN</span>
+            <span class="brand-sub">COMMERCIAL PORTAL</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="dash-topbar-right">
+        <span class="mode-pill dark-text" id="dash-mode-pill">Live API</span>
+        <div class="user-chip">
+          <span class="status-dot active"></span>
+          <div class="user-chip-text">
+            <strong id="topbar-user-name">—</strong>
+            <span id="topbar-account-no">Acct #—</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-sm" id="logout-btn">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="dash-shell">
+      <aside class="dash-sidebar" id="dash-sidebar">
+        <div class="sidebar-balance-box">
+          <span class="sidebar-label">AVAILABLE BALANCE</span>
+          <div class="sidebar-balance tabular" id="sidebar-balance">$0.00</div>
+          <span class="sidebar-acct tabular" id="sidebar-acct">Account #—</span>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Dashboard Navigation">
+          <button type="button" class="nav-item active" data-tab="overview">
+            <span class="nav-icon">&#9638;</span>
+            Account Overview
+          </button>
+          <button type="button" class="nav-item" data-tab="transfers">
+            <span class="nav-icon">&#8644;</span>
+            Transfers
+          </button>
+          <button type="button" class="nav-item" data-tab="teller">
+            <span class="nav-icon">&#36;</span>
+            Deposit &amp; Withdraw
+          </button>
+          <button type="button" class="nav-item" data-tab="ledger">
+            <span class="nav-icon">&#9776;</span>
+            Transaction Ledger
+          </button>
+          <button type="button" class="nav-item" data-tab="security">
+            <span class="nav-icon">&#9881;</span>
+            Profile &amp; Security
+          </button>
+        </nav>
+
+        <div class="sidebar-footer-info">
+          <div>ABA Routing: <strong class="tabular">021000021</strong></div>
+          <div>Status: <span class="badge-active">ACTIVE</span></div>
+        </div>
+      </aside>
+
+      <main class="dash-main">
+        <!-- TAB: OVERVIEW -->
+        <section class="dash-tab" id="tab-overview">
+          <div class="page-head">
+            <div>
+              <p class="section-eyebrow">COMMERCIAL ACCOUNT SUMMARY</p>
+              <h1 id="overview-greeting">Welcome back</h1>
+            </div>
+            <div class="quick-head-actions">
+              <button type="button" class="btn btn-outline-sm" data-goto-tab="teller">Deposit / Withdraw</button>
+              <button type="button" class="btn btn-primary-sm" data-goto-tab="transfers">New Transfer</button>
+            </div>
+          </div>
+
+          <div class="overview-top-grid">
+            <div class="balance-hero-card">
+              <div class="balance-hero-top">
+                <div>
+                  <span class="hero-card-label">CURRENT AVAILABLE BALANCE</span>
+                  <div class="hero-card-amount tabular" id="overview-balance">$0.00</div>
+                </div>
+                <span class="status-pill-active">ACTIVE ACCOUNT</span>
+              </div>
+              <div class="balance-hero-meta">
+                <div>
+                  <span class="meta-k">Account Holder</span>
+                  <strong id="overview-holder">—</strong>
+                </div>
+                <div>
+                  <span class="meta-k">Account Number</span>
+                  <strong class="tabular" id="overview-acct-no">—</strong>
+                </div>
+                <div>
+                  <span class="meta-k">Currency / Precision</span>
+                  <strong>USD (2 Decimals)</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-stack">
+              <div class="kpi-card">
+                <span class="kpi-label">Total Inflows (Credits)</span>
+                <strong class="kpi-val positive tabular" id="kpi-inflows">$0.00</strong>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Total Outflows (Debits)</span>
+                <strong class="kpi-val negative tabular" id="kpi-outflows">$0.00</strong>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Posted Ledger Entries</span>
+                <strong class="kpi-val tabular" id="kpi-count">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="overview-lower-grid">
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>Liquidity &amp; Activity Mix</h3>
+                <span class="panel-sub">Calculated from posted ledger rows</span>
+              </div>
+              <div id="activity-bars" class="activity-bars"></div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>Recent Ledger Activity</h3>
+                <button type="button" class="link-btn" data-goto-tab="ledger">View All &rarr;</button>
+              </div>
+              <div class="table-wrap">
+                <table class="ledger-table compact-table">
+                  <thead>
+                    <tr>
+                      <th>Tx ID</th>
+                      <th>Type</th>
+                      <th>Counterparty</th>
+                      <th class="num-col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-tx-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: TRANSFERS -->
+        <section class="dash-tab hidden" id="tab-transfers">
+          <div class="page-head">
+            <div>
+              <p class="section-eyebrow">ATOMIC INTER-ACCOUNT SETTLEMENT</p>
+              <h1>Transfer Funds</h1>
+            </div>
+          </div>
+
+          <div class="two-col-grid">
+            <form id="transfer-form" class="panel-card form-panel" novalidate>
+              <h3>Wire / Account Transfer</h3>
+              <p class="panel-desc">
+                Funds move atomically between active Meridian Commercial Bank accounts with
+                simultaneous ledger recording.
+              </p>
+
+              <div class="field-group">
+                <label for="transfer-receiver">Recipient Account Number</label>
+                <div class="input-with-btn">
+                  <input
+                    id="transfer-receiver"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="e.g. 10010002"
+                    required
+                  />
+                  <button type="button" class="btn btn-outline-sm" id="verify-recipient-btn">
+                    Verify
+                  </button>
+                </div>
+                <div id="recipient-preview" class="recipient-preview hidden"></div>
+              </div>
+
+              <div class="field-group">
+                <label for="transfer-amount">Transfer Amount (USD)</label>
+                <input
+                  id="transfer-amount"
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="0.00"
+                  required
+                />
+                <div class="field-hint">
+                  Available to transfer: <strong class="tabular" id="transfer-avail-hint">$0.00</strong>
+                </div>
+              </div>
+
+              <div id="transfer-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="transfer-submit-btn">
+                Authorize &amp; Execute Transfer
+              </button>
+            </form>
+
+            <div class="panel-card">
+              <h3>Settlement Controls &amp; Rules</h3>
+              <ul class="policy-list">
+                <li>
+                  <strong>Atomic Execution</strong>
+                  <span>Sender debit, recipient credit, and ledger entry commit together or roll back completely.</span>
+                </li>
+                <li>
+                  <strong>Active Account Verification</strong>
+                  <span>Both originating and destination accounts must carry an <code>ACTIVE</code> status.</span>
+                </li>
+                <li>
+                  <strong>Self-Transfer Prevention</strong>
+                  <span>Originating and destination account numbers cannot be identical.</span>
+                </li>
+                <li>
+                  <strong>Fixed-Point Currency Guard</strong>
+                  <span>Amounts with more than two decimal places or non-positive values are rejected.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: TELLER (DEPOSIT & WITHDRAW) -->
+        <section class="dash-tab hidden" id="tab-teller">
+          <div class="page-head">
+            <div>
+              <p class="section-eyebrow">TREASURY TELLER OPERATIONS</p>
+              <h1>Deposit &amp; Withdraw</h1>
+            </div>
+          </div>
+
+          <div class="two-col-grid">
+            <form id="deposit-form" class="panel-card form-panel" novalidate>
+              <div class="teller-badge deposit">CREDIT / DEPOSIT</div>
+              <h3>Deposit Funds</h3>
+              <p class="panel-desc">Credit your commercial account and post a Deposit entry to the ledger.</p>
+
+              <div class="field-group">
+                <label for="deposit-amount">Deposit Amount (USD)</label>
+                <input
+                  id="deposit-amount"
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+
+              <div class="preset-row">
+                <button type="button" class="preset-chip" data-target="deposit-amount" data-val="500.00">+$500</button>
+                <button type="button" class="preset-chip" data-target="deposit-amount" data-val="2500.00">+$2,500</button>
+                <button type="button" class="preset-chip" data-target="deposit-amount" data-val="10000.00">+$10,000</button>
+                <button type="button" class="preset-chip" data-target="deposit-amount" data-val="25000.00">+$25,000</button>
+              </div>
+
+              <div id="deposit-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="deposit-submit-btn">
+                Post Deposit
+              </button>
+            </form>
+
+            <form id="withdraw-form" class="panel-card form-panel" novalidate>
+              <div class="teller-badge withdraw">DEBIT / WITHDRAWAL</div>
+              <h3>Withdraw Funds</h3>
+              <p class="panel-desc">Disburse funds against your verified available balance.</p>
+
+              <div class="field-group">
+                <label for="withdraw-amount">Withdrawal Amount (USD)</label>
+                <input
+                  id="withdraw-amount"
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="0.00"
+                  required
+                />
+                <div class="field-hint">
+                  Available balance: <strong class="tabular" id="withdraw-avail-hint">$0.00</strong>
+                </div>
+              </div>
+
+              <div class="preset-row">
+                <button type="button" class="preset-chip" data-target="withdraw-amount" data-val="100.00">$100</button>
+                <button type="button" class="preset-chip" data-target="withdraw-amount" data-val="500.00">$500</button>
+                <button type="button" class="preset-chip" data-target="withdraw-amount" data-val="2000.00">$2,000</button>
+                <button type="button" class="preset-chip" data-target="withdraw-amount" data-val="5000.00">$5,000</button>
+              </div>
+
+              <div id="withdraw-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-navy btn-block" id="withdraw-submit-btn">
+                Authorize Withdrawal
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB: TRANSACTION LEDGER -->
+        <section class="dash-tab hidden" id="tab-ledger">
+          <div class="page-head">
+            <div>
+              <p class="section-eyebrow">AUDIT TRAIL · BANK_TRANSACTIONS</p>
+              <h1>Transaction Ledger</h1>
+            </div>
+            <button type="button" class="btn btn-outline-sm" id="export-csv-btn">
+              Export CSV Statement
+            </button>
+          </div>
+
+          <div class="panel-card">
+            <div class="ledger-toolbar">
+              <div class="filter-pills" id="ledger-type-filters">
+                <button type="button" class="filter-pill active" data-type="ALL">All</button>
+                <button type="button" class="filter-pill" data-type="Deposit">Deposits</button>
+                <button type="button" class="filter-pill" data-type="Withdrawal">Withdrawals</button>
+                <button type="button" class="filter-pill" data-type="Transfer">Transfers</button>
+              </div>
+              <div class="search-box">
+                <input
+                  id="ledger-search-input"
+                  type="search"
+                  placeholder="Search Tx ID, account #, or entity..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="ledger-table">
+                <thead>
+                  <tr>
+                    <th>Tx ID</th>
+                    <th>Timestamp</th>
+                    <th>Type</th>
+                    <th>Details / Counterparty</th>
+                    <th class="num-col">Amount</th>
+                    <th class="action-col">Receipt</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: PROFILE & SECURITY -->
+        <section class="dash-tab hidden" id="tab-security">
+          <div class="page-head">
+            <div>
+              <p class="section-eyebrow">ACCOUNT GOVERNANCE</p>
+              <h1>Profile &amp; Security</h1>
+            </div>
+          </div>
+
+          <div class="two-col-grid">
+            <div class="panel-card">
+              <h3>Account Profile</h3>
+              <dl class="profile-dl">
+                <div>
+                  <dt>Account Holder Name</dt>
+                  <dd id="profile-name">—</dd>
+                </div>
+                <div>
+                  <dt>Account Number</dt>
+                  <dd class="tabular" id="profile-acct-no">—</dd>
+                </div>
+                <div>
+                  <dt>Account Status</dt>
+                  <dd><span class="badge-active">ACTIVE</span></dd>
+                </div>
+                <div>
+                  <dt>Opened On</dt>
+                  <dd id="profile-created">—</dd>
+                </div>
+                <div>
+                  <dt>Current Available Balance</dt>
+                  <dd class="tabular" id="profile-balance">$0.00</dd>
+                </div>
+              </dl>
+            </div>
+
+            <form id="password-form" class="panel-card form-panel" novalidate>
+              <h3>Change Password</h3>
+              <p class="panel-desc">Update your credentials. Stored with salted cryptographic hashing.</p>
+
+              <div class="field-group">
+                <label for="pw-current">Current Password</label>
+                <input id="pw-current" type="password" autocomplete="current-password" required />
+              </div>
+
+              <div class="field-group">
+                <label for="pw-new">New Password</label>
+                <input
+                  id="pw-new"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Minimum 6 characters"
+                  required
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="pw-confirm">Confirm New Password</label>
+                <input id="pw-confirm" type="password" autocomplete="new-password" required />
+              </div>
+
+              <div id="password-error" class="form-alert hidden" role="alert"></div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="password-submit-btn">
+                Update Password
+              </button>
+            </form>
+          </div>
+
+          <div class="panel-card danger-zone">
+            <div>
+              <h3>Close Commercial Account</h3>
+              <p>
+                Deactivates this account (<code>is_active = false</code>). Once closed, sign-in,
+                deposits, withdrawals, and transfers to or from this account are permanently blocked,
+                while historical ledger records are retained for audit integrity.
+              </p>
+            </div>
+            <button type="button" class="btn btn-danger" id="open-close-account-btn">
+              Close Account
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+

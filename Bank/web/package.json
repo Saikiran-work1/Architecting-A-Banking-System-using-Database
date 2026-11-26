@@ -1,0 +1,14 @@
+{
+  "name": "meridian-commercial-bank",
+  "version": "1.0.0",
+  "description": "Commercial banking web portal and atomic ledger API modeled on the BankSystem Java/MySQL project.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/bank.test.js tests/static-engine.test.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

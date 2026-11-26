@@ -1,0 +1,64 @@
+{
+  "nextAccountNumber": 10010003,
+  "nextTransactionId": 50006,
+  "accounts": [
+    {
+      "accountNumber": 10010001,
+      "customerName": "Meridian Logistics Corp",
+      "passwordHash": "scrypt$d1d127694a4023b25fa7ede11872f0e3$59df8074503c6b1d950ee79f95bededeea57335ce02db04c2046f21bbe194dbfb56b0bc2e996bfe9f58265e08ce30a5e7d3de754d076ade807b3decd03c7f8b9",
+      "balanceCents": 12545000,
+      "active": true,
+      "createdAt": "2026-10-11T02:37:29.368Z"
+    },
+    {
+      "accountNumber": 10010002,
+      "customerName": "Apex Retail Holdings",
+      "passwordHash": "scrypt$298ed2847b1b8e9f7f18fb1cacb023fb$06522875fec7304b2652ed44cb23be415985f8c9f5d8e7eda076efe62c9736061e80ec6cc05b48dc66ff2b5ef43355fd58f1f7bd8f1663dd587fd3c902275624",
+      "balanceCents": 4892050,
+      "active": true,
+      "createdAt": "2026-10-26T02:37:29.368Z"
+    }
+  ],
+  "transactions": [
+    {
+      "transactionId": 50001,
+      "payerAccountNumber": null,
+      "receiverAccountNumber": 10010001,
+      "amountCents": 15000000,
+      "transactionType": "Deposit",
+      "createdAt": "2026-11-05T02:37:29.368Z"
+    },
+    {
+      "transactionId": 50002,
+      "payerAccountNumber": null,
+      "receiverAccountNumber": 10010002,
+      "amountCents": 3500000,
+      "transactionType": "Deposit",
+      "createdAt": "2026-11-09T02:37:29.368Z"
+    },
+    {
+      "transactionId": 50003,
+      "payerAccountNumber": 10010001,
+      "receiverAccountNumber": 10010002,
+      "amountCents": 1850000,
+      "transactionType": "Transfer",
+      "createdAt": "2026-11-16T02:37:29.368Z"
+    },
+    {
+      "transactionId": 50004,
+      "payerAccountNumber": 10010001,
+      "receiverAccountNumber": null,
+      "amountCents": 605000,
+      "transactionType": "Withdrawal",
+      "createdAt": "2026-11-21T02:37:29.368Z"
+    },
+    {
+      "transactionId": 50005,
+      "payerAccountNumber": 10010002,
+      "receiverAccountNumber": null,
+      "amountCents": 457950,
+      "transactionType": "Withdrawal",
+      "createdAt": "2026-11-23T02:37:29.368Z"
+    }
+  ]
+}
