@@ -1,1 +1,1 @@
-# Architecting-Banking-System-using-Database
+# Architecting-A-Banking-System-using-Database
